@@ -48,7 +48,7 @@ const getGenImg = async (req, res) =>{
       },
     );
     // responseType: "arraybuffer"  - is neccessary when getting img data as response
-    fs.writeFileSync(`./server/generated_images/${req.body.prompt.slice(10)}.png`, Buffer.from(response.data));
+    // fs.writeFileSync(`./server/generated_images/${req.body.prompt.slice(10)}.png`, Buffer.from(response.data));
     // const blob = new Blob([response.data], { type: 'image/png' });
     // const url = URL.createObjectURL(blob);
     // console.log(`Image URL: ${url}`);
@@ -60,7 +60,7 @@ const getGenImg = async (req, res) =>{
     const base64String = Buffer.from(response.data).toString('base64')
     const mimeType = response.headers['content-type']; 
   
-    // console.log(base64String, typeof(base64String));
+    console.log("image generated and sent ", base64String, typeof(base64String));
     res.json({b64: `data:${mimeType};base64,${base64String}`})
 
   } catch(err){
