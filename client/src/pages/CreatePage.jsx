@@ -44,7 +44,7 @@ const CreatePage = () => {
       let response = await axios.post("https://image-generator-tazg.onrender.com/api/v1/dalle", newPost) 
       // let response = await axios.get("./../../public/vite.svg", {responseType: "blob"})
       // // mentioning response type here is necessary else we won't know a blob data is coming
-      // console.log("create page 1: ", response.data.b64, typeof(response.data.b64))
+      console.log("create page 1: ", response.data, " | ", typeof(response.data.b64))
       
       // setNewPost({...newPost, binPhoto: response.data, photo: getBlobUrl(response.data, "svg+xml")})
       setNewPost({...newPost, photo: response.data.b64})
