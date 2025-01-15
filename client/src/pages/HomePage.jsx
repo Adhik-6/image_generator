@@ -15,7 +15,7 @@ const HomePage = () => {
     async function getAllImg() {
       try{
         setloading(true)
-        let response = await axios.get("http://localhost:8000/api/v1/posts")
+        let response = await axios.get("https://image-generator-tazg.onrender.com/api/v1/posts")
         setImgData(response.data.images)
         setFilteredData(response.data.images)
       } catch(err) {
