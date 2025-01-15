@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import path from 'path';
 import "express-async-error"
 import cors from 'cors'
 import router from './routes/route.js';
@@ -8,6 +9,7 @@ import {errorHandler, pageNotFound} from './middleware/index.js';
 
 const app = express();
 dotenv.config()
+const __dirname = path.resolve();
 
 app.use(cors({
   origin: "http://localhost:5173",
