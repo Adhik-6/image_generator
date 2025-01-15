@@ -23,6 +23,7 @@ app.use(express.json({limit: "50mb"})) //increase deafult limit so that the back
 // })
 app.use("/api/v1", router);
 console.log("Before working")
+console.log(process.env.NODE_ENV, " length: ", process.env.NODE_ENV.length)
 if(process.env.NODE_ENV === "production "){ // look out, when setting node_env's value in pkg.json file there came a unexpected space after the word "production". so we gave "production " //with one trailing space.
     console.log("working")
     app.use(express.static(path.join(__dirname, "/client/dist")))
