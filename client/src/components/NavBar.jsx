@@ -24,10 +24,10 @@ const NavBar = () => {
     <>
     <header className='bg-slate-200 dark:bg-slate-900 flex justify-between items-center p-2 sm:px-6 py-4 shadow-md dark:shadow-slate-500 fixed right-0 left-0 z-10'>
 
-      <Link to="/"><div className='h-fit w-28 dark:bg-white p-1 rounded'>
+      <a href='https://huggingface.co/' target='_blank'rel="noopener noreferrer"><div className='h-fit w-28 dark:bg-white mx-1 overflow-hidden rounded'>
         <img className='h-full w-full' src={logo} alt="OpenAI Logo" />
       </div>
-      </Link>
+      </a>
 
       <div className='flex gap-8 items-center'>
         <button onClick={() => setMode((prev) => !prev)} className='bg-slate-300 dark:bg-slate-700 rounded-full py-[5px] px-[5px] '>

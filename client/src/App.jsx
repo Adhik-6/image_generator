@@ -1,5 +1,5 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
-import { CreatePage, HomePage } from './pages/index.js'
+import { CreatePage, HomePage, PageNotFound } from './pages/index.js'
 import {NavBar} from './components/index.js'
 
 function App() {
@@ -13,6 +13,7 @@ function App() {
         <Routes>
           <Route path={"/"} element={<HomePage/>}/>
           <Route path={"/create"} element={<CreatePage/>}/>
+          <Route path={"*"} element={<PageNotFound/>}/>
         </Routes>
       </main>
     </BrowserRouter>
