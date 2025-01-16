@@ -8,10 +8,10 @@ import connectDB from './db/connect.js'
 import errorHandler from './middleware/errorHandler.js';
 
 dotenv.config()
-app.use(express.json({limit: "50mb"})) //increase deafult limit so that the backend can accept large payloads
-
 const app = express();
+
 const __dirname = path.resolve();
+app.use(express.json({limit: "50mb"})) //increase deafult limit so that the backend can accept large payloads
 
 // You can remove this when in production if you're combining your frontend and backend together into a single webpage.
 // app.use(cors({
