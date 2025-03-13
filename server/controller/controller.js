@@ -81,7 +81,7 @@ const postToCom = async (req, res) => {
   try{
     console.log("Posting: ", req.body)
 
-    const uploadResult = await cloudinary.uploader.upload(req.body.photo, {public_id: `${req.body.prompt.slice(-10)}`})
+    const uploadResult = await cloudinary.uploader.upload(req.body.photo)
     console.log("Cloudinar upload results: ", uploadResult);
   
     const data = await posts.create({ prompt: req.body.prompt, name: req.body.name.length==0?"Anonymous":req.body.name, photo: uploadResult.secure_url});
