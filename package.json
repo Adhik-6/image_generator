@@ -21,7 +21,7 @@
     "express": "^4.21.2",
     "express-async-error": "^0.0.2",
     "form-data": "^4.0.1",
-    "mongoose": "^8.9.4"
+    "mongoose": "^8.9.5"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"
