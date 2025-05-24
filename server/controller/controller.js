@@ -51,28 +51,60 @@ const getGenImg = async (req, res) =>{
 
     // > stabilityai/stable-diffusion-xl-base-1.0
     // > CompVis/stable-diffusion-v1-4
+    // > stable-diffusion-v1-5/stable-diffusion-v1-5
     console.log("Generating....")
-    const response = await axios.post("https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0", JSON.stringify({inputs: req.body.prompt}), 
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      responseType: 'arraybuffer'
+  //   const response = await axios.post("https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0", JSON.stringify({inputs: req.body.prompt}), 
+  //   {
+  //     headers: {
+  //       Authorization: `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
+  //       "Content-Type": "application/json",
+  //       'Accept': 'application/json',
+  //     },
+  //     // responseType: 'arraybuffer'
+  //   }
+  // );
+  // response.data returns an array buffer
+  // const mimeType = response.headers["content-type"];
+  // if (mimeType === "application/json") throw new Error("Image generation Limit Reached");
+  let mimeType = "image/png"; // default mime type
+  if(req.body.prompt.length > 100) {
+    mimeType = "image/jpeg"; // if prompt is too long, use jpeg
+  }
+  async function query(data) {
+    const response = await fetch(
+      "https://router.huggingface.co/nscale/v1/images/generations",
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify(data),
+      }
+    );
+    mimeType = response.headers.get("content-type") || "image/png"; // default to png if not specified
+    if(response.status === 429) throw new Error("Image generation Limit Reached");
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(`Error: ${error.error}`);
     }
-  );
-    // response.data returns an array buffer
-    console.log("Generated.")
-    // fs.writeFileSync(`./server/generated_images/${req.body.prompt.slice(10)}.${mimeType}`, Buffer.from(response.data));
-    const base64String = Buffer.from(response.data).toString('base64')
-    const mimeType = response.headers['content-type']
-    if(mimeType==="application/json") throw new Error("Image generation Limit Reached")
-    
-    console.log("Image successfully sent")
-    res.json({b64: `data:${mimeType};base64,${base64String}`})
+    return response.json();
+  }
+  const result = await query({
+    response_format: "b64_json",
+    prompt: `\"${req.body.prompt}\"`,
+    model: "stabilityai/stable-diffusion-xl-base-1.0",
+  });
+  console.log("Generated.");
+  // fs.writeFileSync(`./server/generated_images/${req.body.prompt.slice(10)}.${mimeType}`, Buffer.from(response.data));
+  // const base64String = Buffer.from(response.data).toString("base64");
+  const base64String = result.data[0].b64_json;
 
-  } catch(err){
-    console.log("Image generation API error: ",err.message, " | ", err.name)
+  console.log("Image successfully sent");
+  res.json({ b64: `data:${mimeType};base64,${base64String}` });
+
+} catch (err) {
+    console.log("Image generation API error: ",err, " | ", err.name)
   }
 }
 
