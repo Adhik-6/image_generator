@@ -1,61 +1,6 @@
-# AI Image Generator
-
-This application is built using the MERN stack. Initially, DALL-E AI was considered for image generation, but due to limitations in the free tier, the project switched to open-source models. Images are generated using open-source text-to-image models available at [Hugging Face](https://huggingface.co). The serverless API allows up to 1000 free requests per day (higher limits are available with a subscription).  
-**Live site:** [AI Image Hive](https://image-generator-tazg.onrender.com)
-
-## Getting Started
-
-To run this project locally, follow these steps:
-
-1. **Build the project:**
-  ```bash
-  npm run build
-  ```
-
-2. **Set up environment variables:**  
-  Create a `.env` file in the root directory and add the following variables:
-  - `MONGO_URI`: Your MongoDB connection string.
-  - `PORT`: (Optional) Specify the port for the app.
-  - `HUGGINGFACE_API_KEY`: Get your API key from [Hugging Face](https://huggingface.co).
-  - `CLOUD_NAME`: Your Cloudinary cloud name.
-  - `CLOUD_API_KEY`: Your Cloudinary API key.
-  - `CLOUD_API_SECRET`: Your Cloudinary API secret.
-
-3. **Start the application:**
-  ```bash
-  npm start
-  ```
-
-## Windows Users: Handling NODE_ENV Issues
-
-If you encounter the error:  
-`'NODE_ENV' is not recognized as an internal or external command, operable program or batch file.`
-
-- Update the `scripts` section in your `package.json` as follows:
-  ```json
-  // For testing production locally (not for deployment)
-  "scripts": {
-   "start": "SET NODE_ENV=production && node server/index.js",
-   "build": "npm install && npm install --prefix client && npm run build --prefix client",
-   "start:server": "SET NODE_ENV=development && nodemon ./server/index.js",
-   "test": "echo \"Error: no test specified\" && exit 1"
-  }
-  ```
-
-- In `./server/index.js`, replace line 27 with:
-  ```js
-  if (process.env.NODE_ENV === "production ") {
-  ```
-  > **Note:** The trailing space after `"production "` is intentional. When using the `SET` keyword in Windows, the space is included in the environment variable value.
-
-This adjustment is necessary because Windows requires the `SET` keyword to define environment variables, and it may include trailing spaces.
-
-
-
 
 <div id="readme-top" align="center">
 
-  <img src="assets/logo.png" alt="logo" width="200" height="auto" />
   <h1>AI Image Hive</h1>
 
   <p>An AI-powered image generation & sharing platform.</p>
@@ -74,9 +19,6 @@ This adjustment is necessary because Windows requires the `SET` keyword to defin
 <!-- Table of Contents -->
 # :notebook_with_decorative_cover: Table of Contents
 
-- [AI Image Generator](#ai-image-generator)
-  - [Getting Started](#getting-started)
-  - [Windows Users: Handling NODE\_ENV Issues](#windows-users-handling-node_env-issues)
 - [:notebook\_with\_decorative\_cover: Table of Contents](#notebook_with_decorative_cover-table-of-contents)
   - [:star2: About the Project](#star2-about-the-project)
     - [:camera: Screenshots](#camera-screenshots)
@@ -201,8 +143,33 @@ To install and set up the project locally, follow these steps:
 4. **Set up environment variables:**  
   Create a `.env` file in the root directory and add the required variables as described above.
 
-
 The application should now be running locally.
+
+
+### Windows Users: Handling NODE_ENV Issues
+
+If you encounter the error:  
+`'NODE_ENV' is not recognized as an internal or external command, operable program or batch file.`
+
+- Update the `scripts` section in your `package.json` as follows:
+  ```json
+  // For testing production locally (not for deployment)
+  "scripts": {
+   "start": "SET NODE_ENV=production && node server/index.js",
+   "build": "npm install && npm install --prefix client && npm run build --prefix client",
+   "start:server": "SET NODE_ENV=development && nodemon ./server/index.js",
+   "test": "echo \"Error: no test specified\" && exit 1"
+  }
+  ```
+
+- In `./server/index.js`, replace line 27 with:
+  ```js
+  if (process.env.NODE_ENV === "production ") {
+  ```
+  > **Note:** The trailing space after `"production "` is intentional. When using the `SET` keyword in Windows, the space is included in the environment variable value.
+
+This adjustment is necessary because Windows requires the `SET` keyword to define environment variables, and it may include trailing spaces.
+
    
 <!-- Run Locally -->
 ### :running: Run Locally
