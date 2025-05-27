@@ -101,12 +101,12 @@
 To run this project, you will need to add the following environment variables to your .env file
 
 ```env
-MONGO_URI=
-HUGGINGFACE_API_KEY=
-CLOUD_NAME=
-CLOUD_API_KEY=
-CLOUD_API_SECRET=
-PORT=
+MONGO_URI
+HUGGINGFACE_API_KEY
+CLOUD_NAME
+CLOUD_API_KEY
+CLOUD_API_SECRET
+PORT
 ```
 
 <!-- Getting Started -->
@@ -247,6 +247,7 @@ Use this section to mention useful resources and libraries that you have used in
  - [Tailwind CSS](https://tailwindcss.com) - For styling the frontend
  - [Cloudinary](https://cloudinary.com) - For image upload and storage
  - [Hugging Face](https://huggingface.co) - For providing the API for image generation
+ - [Render](https://render.com) - For deploying using render
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
