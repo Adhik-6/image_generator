@@ -19,22 +19,22 @@
 <!-- Table of Contents -->
 # :notebook_with_decorative_cover: Table of Contents
 
-- [:notebook\_with\_decorative\_cover: Table of Contents](#notebook_with_decorative_cover-table-of-contents)
-  - [:star2: About the Project](#star2-about-the-project)
-    - [:camera: Screenshots](#camera-screenshots)
-    - [:space\_invader: Tech Stack](#space_invader-tech-stack)
-    - [:dart: Features](#dart-features)
-    - [:key: Environment Variables](#key-environment-variables)
-  - [:toolbox: Getting Started](#toolbox-getting-started)
-    - [:bangbang: Prerequisites](#bangbang-prerequisites)
-    - [:gear: Installation](#gear-installation)
-    - [:running: Run Locally](#running-run-locally)
-  - [:wave: Contributing](#wave-contributing)
-    - [Top contributors:](#top-contributors)
-  - [:grey\_question: FAQ](#grey_question-faq)
-  - [:warning: License](#warning-license)
-  - [:handshake: Contact](#handshake-contact)
-  - [:gem: Acknowledgements](#gem-acknowledgements)
+- [:star2: About the Project](#star2-about-the-project)
+  - [:camera: Screenshots](#camera-screenshots)
+  - [:space\_invader: Tech Stack](#space_invader-tech-stack)
+  - [:dart: Features](#dart-features)
+  - [:key: Environment Variables](#key-environment-variables)
+- [:toolbox: Getting Started](#toolbox-getting-started)
+  - [:bangbang: Prerequisites](#bangbang-prerequisites)
+  - [:gear: Installation](#gear-installation)
+  - [Windows Users: Handling NODE\_ENV Issues](#windows-users-handling-node_env-issues)
+  - [:running: Run Locally](#running-run-locally)
+- [:wave: Contributing](#wave-contributing)
+  - [Top contributors:](#top-contributors)
+- [:grey\_question: FAQ](#grey_question-faq)
+- [:warning: License](#warning-license)
+- [:handshake: Contact](#handshake-contact)
+- [:gem: Acknowledgements](#gem-acknowledgements)
 
 <!-- can't wrap the table of contents because of some auto formatting issue in VSCode
 # :notebook_with_decorative_cover: Table of Contents
