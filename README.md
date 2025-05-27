@@ -9,7 +9,7 @@
 
 </div>
 
-<p align="center">This application is built using the MERN stack. Initially, DALL-E AI was considered for image generation, but due to limitations in the free tier, the project switched to open-source models. Images are generated using open-source text-to-image models available at [Hugging Face](https://huggingface.co). The serverless API allows up to 1000 free requests per day (higher limits are available with a subscription).</p>
+<p align="center">This application is built using the MERN stack. Initially, DALL-E AI was considered for image generation, but due to limitations in the free tier, the project switched to open-source models. Images are generated using open-source text-to-image models available at https://huggingface.co. The serverless API allows up to 1000 free requests per day (higher limits are available with a subscription).</p>
 
 <br />
 
