@@ -1,6 +1,8 @@
 
 <div id="readme-top" align="center">
 
+  <img src="./client/public/huggingface_logo.svg" alt="HuggingFace Logo" />
+
   <h1>AI Image Hive</h1>
 
   <p>An AI-powered image generation & sharing platform.</p>
@@ -9,7 +11,7 @@
 
 </div>
 
-<p align="center">This application is built using the MERN stack. Initially, DALL-E AI was considered for image generation, but due to limitations in the free tier, the project switched to open-source models. Images are generated using open-source text-to-image models available at https://huggingface.co. The serverless API allows up to 1000 free requests per day (higher limits are available with a subscription).</p>
+<p align="center">This application was built using MERN stack. Initially, DALL-E AI was considered for image generation, but due to limitations in the free tier, the project switched to open-source models. Images are generated using open-source text-to-image models available at <a href="https://huggingface.co">Hugging Face</a> such as <a href="https://huggingface.co/black-forest-labs/FLUX.1-dev">black-forest-labs/FLUX.1-dev</a>, <a href="https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0">stabilityai/stable-diffusion-xl-base-1.0</a> and <a href="https://huggingface.co/CompVis/stable-diffusion-v1-4">CompVis/stable-diffusion-v1-4</a>.</p>
 
 <br />
 
@@ -27,10 +29,9 @@
 - [:toolbox: Getting Started](#toolbox-getting-started)
   - [:bangbang: Prerequisites](#bangbang-prerequisites)
   - [:gear: Installation](#gear-installation)
-  - [Windows Users: Handling NODE\_ENV Issues](#windows-users-handling-node_env-issues)
   - [:running: Run Locally](#running-run-locally)
+  - [:computer: Testing Production Locally](#computer-testing-production-locally)
 - [:wave: Contributing](#wave-contributing)
-  - [Top contributors:](#top-contributors)
 - [:grey\_question: FAQ](#grey_question-faq)
 - [:warning: License](#warning-license)
 - [:handshake: Contact](#handshake-contact)
@@ -94,20 +95,19 @@
 - Image generation using open-source models from Hugging Face
 - Image upload and sharing functionality
 - Responsive design for mobile and desktop
+- Dark & light mode support
 
 <!-- Env Variables -->
 ### :key: Environment Variables
 
 To run this project, you will need to add the following environment variables to your .env file
 
-```env
-MONGO_URI
-HUGGINGFACE_API_KEY
-CLOUD_NAME
-CLOUD_API_KEY
-CLOUD_API_SECRET
-PORT
-```
+- `MONGO_URI`: Your MongoDB connection string.
+- `HUGGINGFACE_API_KEY`: Your Hugging Face API key for accessing image generation.
+- `CLOUD_NAME`, `CLOUD_API_KEY`, `CLOUD_API_SECRET`: Your Cloudinary credentials for image upload and storage.
+- `VITE_BACKEND_URL_PROD`: The production URL of your backend server, if any.
+- `VITE_BACKEND_URL_DEV`: The development URL of your backend server (default is `http://localhost:8000`).
+- `USE_MOCK_GEN`: Set to `true` to use mock image generation (for testing purposes), or `false` to use real image generation via Hugging Face API.
 
 <!-- Getting Started -->
 ## 	:toolbox: Getting Started
@@ -128,47 +128,13 @@ To install and set up the project locally, follow these steps:
   cd image_generator
   ```
 
-2. **Install server dependencies:**
+2. **Install server & client dependencies:**
   ```bash
-  npm install
+  npm build
   ```
 
-3. **Install client dependencies:**
-  ```bash
-  cd client
-  npm install
-  cd ..
-  ```
-
-4. **Set up environment variables:**  
-  Create a `.env` file in the root directory and add the required variables as described above.
-
-The application should now be running locally.
-
-
-### Windows Users: Handling NODE_ENV Issues
-
-If you encounter the error:  
-`'NODE_ENV' is not recognized as an internal or external command, operable program or batch file.`
-
-- Update the `scripts` section in your `package.json` as follows:
-  ```json
-  // For testing production locally (not for deployment)
-  "scripts": {
-   "start": "SET NODE_ENV=production && node server/index.js",
-   "build": "npm install && npm install --prefix client && npm run build --prefix client",
-   "start:server": "SET NODE_ENV=development && nodemon ./server/index.js",
-   "test": "echo \"Error: no test specified\" && exit 1"
-  }
-  ```
-
-- In `./server/index.js`, replace line 27 with:
-  ```js
-  if (process.env.NODE_ENV === "production ") {
-  ```
-  > **Note:** The trailing space after `"production "` is intentional. When using the `SET` keyword in Windows, the space is included in the environment variable value.
-
-This adjustment is necessary because Windows requires the `SET` keyword to define environment variables, and it may include trailing spaces.
+3. **Set up environment variables:**  
+Create a `.env` file in the root directory and add the required variables as described above.
 
    
 <!-- Run Locally -->
@@ -184,6 +150,38 @@ This adjustment is necessary because Windows requires the `SET` keyword to defin
   npm run dev
   ```
 
+### :computer: Testing Production Locally
+
+1. To test the production build locally, update the `scripts` section in your `package.json` as follows:
+  ```json
+  // For testing production locally (not for deployment)
+  "scripts": {
+   "start": "NODE_ENV=production && node server/index.js",
+   "build": "npm install && npm install --prefix client && npm run build --prefix client",
+   "start:server": "SET NODE_ENV=development && nodemon ./server/index.js",
+   "test": "echo \"Error: no test specified\" && exit 1"
+  }
+  ```
+2. **Build the client for production:**
+  Make sure to run the build command to create an optimized production build of the client that must be stored in `image_generator/client/dist/`. Then run the folllowing command at the root level of the project folder `image_generator/`.
+  ```bash
+  npm start
+  ```
+3. If you encounter the error `'NODE_ENV' is not recognized as an internal or external command, operable program or batch file.` (which is common on Windows), follow these steps:
+  
+  - In `package.json` (present at root level of the project), replace line 7 with:
+  ```json
+  "start": "SET NODE_ENV=production && node server/index.js",
+  ```
+
+  - In `./server/index.js`, replace line 33 with:
+  ```js
+  if (process.env.NODE_ENV === "production ") {
+  ```
+  > **Note:** The trailing space after `"production "` is intentional. When using the `SET` keyword in Windows, the space is included in the environment variable value.
+
+This adjustment is necessary because Windows requires the `SET` keyword to define environment variables, and it may include trailing spaces.
+
 <!-- CONTRIBUTING -->
 ## :wave: Contributing
 
@@ -198,12 +196,6 @@ Don't forget to give the project a star! Thanks again!
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-
-### Top contributors:
-
-<a href="https://github.com/Adhik-6/Event_Hubzz/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Adhik-6/Event_Hubzz" alt="contrib.rocks image" />
-</a>
 
 
 <!-- FAQ -->
@@ -230,7 +222,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- License -->
 ## :warning: License
 
-Distributed under the no License. See LICENSE.txt for more information.
+Distributed under the no License.
 
 
 <!-- Contact -->
@@ -245,9 +237,12 @@ Adhik - adhik.m10a@gmail.com
 Use this section to mention useful resources and libraries that you have used in your projects.
 
  - [Tailwind CSS](https://tailwindcss.com) - For styling the frontend
- - [Cloudinary](https://cloudinary.com) - For image upload and storage
- - [Hugging Face](https://huggingface.co) - For providing the API for image generation
- - [Render](https://render.com) - For deploying using render
+ - [Cloudinary Documentaion](https://cloudinary.com) - For image upload and storage
+ - [Hugging Face Dcoumentation](https://huggingface.co) - For providing the Inference API usage reference
+ - [Render Documentation](https://render.com) - For deploying using render
+ - [Vite Documentation](https://vitejs.dev/) - For setting up the React frontend
+ - [ChatGPT](https://chat.openai.com/) - For helping with code snippets and debugging
+ - [Gemini](https://gemini.google.com/) - For helping with refactoring and optimizing code
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
