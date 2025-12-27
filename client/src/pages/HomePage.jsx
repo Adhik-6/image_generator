@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import axios from 'axios'
 import { Card, Loader } from './../components/index.js'
 import sampleData from "./../assets/sampleData.json"
-// import vite from './../../public/vite.svg'
 
 const HomePage = () => {
   const [imgData, setImgData] = useState(sampleData)
@@ -11,19 +10,23 @@ const HomePage = () => {
   const [searchfield, setSearchfield] = useState("");
   const [loading, setloading] = useState(true);
   const location = useLocation();
+  const devURL = import.meta.env.VITE_BACKEND_URL_DEV;
+  const prodURL = import.meta.env.VITE_BACKEND_URL_PROD;
   
   useEffect(() => {
     async function getAllImg() {
       try{
         setloading(true)
-        // let response = await axios.get("https://image-generator-tazg.onrender.com/api/v1/posts")
-        let response = await axios.get("http://localhost:8000/api/v1/posts")
+        let baseURL = import.meta.env.DEV? devURL : prodURL;
+        // console.log("Base URL:", baseURL);
+        let response = await axios.get(`${baseURL}/api/v1/posts`)
         // let response = { data: { images: sampleData } }
-        console.log(response.data.images)
+        // console.log(response.data.images)
         setImgData(response.data.images)
         setFilteredData(response.data.images)
       } catch(err) {
         console.log(err.message)
+        window.alert("Something went wrong. Failed to fetch images from the server");
       } finally{
         setloading(false);
       }
@@ -31,7 +34,7 @@ const HomePage = () => {
     getAllImg()
   },[location])
 
-  useEffect(() =>{
+  useEffect(() => {
     if(searchfield)
       setFilteredData(imgData.filter((currItem) => currItem.name.toLowerCase().includes(searchfield.toLowerCase()) || currItem.prompt.toLowerCase().includes(searchfield.toLowerCase())))
     else

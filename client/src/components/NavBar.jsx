@@ -1,4 +1,4 @@
-import React,{useState, useEffect} from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom';
 import { logo } from './../assets/index.js'
 import { LightMode, DarkModeOutlined } from '@mui/icons-material';
@@ -24,7 +24,7 @@ const NavBar = () => {
     <>
     <header className='bg-slate-200 dark:bg-slate-900 flex justify-between items-center p-2 sm:px-6 py-4 shadow-md dark:shadow-slate-500 fixed right-0 left-0 z-10'>
 
-      <a href='https://huggingface.co/' target='_blank'rel="noopener noreferrer"><div className='h-fit w-28 dark:bg-white mx-1 overflow-hidden rounded'>
+      <a href='https://huggingface.co/' target='_blank'rel="noopener noreferrer"><div className='h-fit w-28 dark:bg-white mx-1 overflow-hidden rounded-sm'>
         <img className='h-full w-full' src={logo} alt="OpenAI Logo" />
       </div>
       </a>

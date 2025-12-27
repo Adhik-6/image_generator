@@ -6,4 +6,4 @@ const postSchema = new mongoose.Schema({
   photo: { type: String, required: true }
 })
 
-export const posts = mongoose.model("post", postSchema)
+export const Post = mongoose.model("Post", postSchema)

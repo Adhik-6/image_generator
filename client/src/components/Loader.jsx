@@ -1,4 +1,3 @@
-import React from 'react';
 
 const Loader = () => (
   <div role="status" className='h-full w-full grid place-items-center'>

@@ -1,11 +1,14 @@
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from 'url';
 import dotenv from "dotenv"
-// import fs from "node:fs"; // To save image locally during development
-// import FormData from "form-data"; // Use this when using stability AI API
 import axios from "axios";
 import { v2 as cloudinary } from 'cloudinary';
-import { posts } from "../models/model.js"
+import { Post } from "../models/model.js"
 
 dotenv.config()
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 cloudinary.config({ 
   cloud_name: process.env.CLOUD_NAME, 
@@ -14,120 +17,113 @@ cloudinary.config({
 });
 
 const getAllImg = async (req, res) =>{
-  const data = await posts.find().sort({"_id": -1})
-  console.log("Fetched all data")
+  const data = await Post.find().sort({"_id": -1})
+  // console.log("Fetched all data")
   res.status(200).json({success:true, images: data})
 }
 
 const getGenImg = async (req, res) =>{
   try{    
-    // const response = await axios.postForm( `https://api.stability.ai/v2beta/stable-image/generate/core`,
-    //   axios.toFormData({
-    //     prompt: `${req.body.prompt}`,
-    //     output_format: "png"
-    //   }, new FormData()),
-    //   {
-    //     validateStatus: undefined,
-    //     responseType: "arraybuffer",
-    //     headers: { 
-    //       Authorization: `Bearer ${process.env.STABLEAI_API_KEY}`, 
-    //       Accept: "image/*" 
-    //     },
-    //   },
-    // );
-    //
-    // // fs.writeFileSync(`./server/generated_images/${req.body.prompt.slice(10)}.${mimeType}`, Buffer.from(response.data));
-    
-    // // let response = await axios.get("https://th.bing.com/th?id=OSK.oAPLJ33yhiFp9xD_aZmqjb-cQQI_-BjOfhE6fgFEBwE&w=80&h=80&c=7&o=6&dpr=1.5&pid=SANGAM", {responseType: 'arraybuffer'})
-    
-    // const base64String = Buffer.from(response.data).toString('base64')
-    // const mimeType = response.headers['content-type']; 
-    // console.log("response.mimeType: ", response.headers['content-type'])
-    // if(mimeType==="application/json") throw new Error("Image generation Limit Reached")
-    
-    // res.json({b64: `data:${mimeType};base64,${base64String}`})
-    
-    // responseType: "arraybuffer"  - is neccessary when getting img data as response as this will convert raw bytes into an array buffer
-
     // > stabilityai/stable-diffusion-xl-base-1.0
     // > CompVis/stable-diffusion-v1-4
     // > stable-diffusion-v1-5/stable-diffusion-v1-5
-    console.log("Generating....")
-  //   const response = await axios.post("https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0", JSON.stringify({inputs: req.body.prompt}), 
-  //   {
-  //     headers: {
-  //       Authorization: `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
-  //       "Content-Type": "application/json",
-  //       'Accept': 'application/json',
-  //     },
-  //     // responseType: 'arraybuffer'
-  //   }
-  // );
-  // response.data returns an array buffer
-  // const mimeType = response.headers["content-type"];
-  // if (mimeType === "application/json") throw new Error("Image generation Limit Reached");
-  let mimeType = "image/png"; // default mime type
-  if(req.body.prompt.length > 100) {
-    mimeType = "image/jpeg"; // if prompt is too long, use jpeg
-  }
-  async function query(data) {
-    const response = await fetch(
+    const {prompt} = req.body;
+    // console.log("Generating img for prompt: ", prompt);
+
+    // ---------------------------------------------------------
+    // 1. MOCK MODE: Simulate API to save credits
+    // ---------------------------------------------------------
+    // console.log("USE_MOCK_GEN:", process.env.USE_MOCK_GEN);
+    if(process.env.USE_MOCK_GEN==="true"){
+      console.log("⚠️ USING MOCK MODE: Returning local asset...");
+      await new Promise((resolve) => setTimeout(resolve, 2000)); // simulate delay
+      const imgPath = path.resolve(__dirname, "../../client/public/vite.svg");
+      if (!fs.existsSync(imgPath)) {
+        throw new Error(`Mock image not found at: ${imgPath}`);
+      }
+      const imgBuffer = fs.readFileSync(imgPath);
+      const base64String = imgBuffer.toString("base64");
+      const mimeType = "image/svg+xml";
+      return res.status(200).json({ b64: `data:${mimeType};base64,${base64String}` });
+    }
+
+    // ---------------------------------------------------------
+    // 2. REAL MODE: Call Hugging Face API
+    // ---------------------------------------------------------
+
+    const response = await axios.post(
       "https://router.huggingface.co/together/v1/images/generations",
+      {
+        model: "black-forest-labs/FLUX.1-dev",
+        prompt: prompt,
+        response_format: "base64",
+      },
       {
         headers: {
           Authorization: `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
           "Content-Type": "application/json",
         },
-        method: "POST",
-        body: JSON.stringify(data),
+        timeout: 30000, // 30 seconds timeout
       }
-    );
-    mimeType = response.headers.get("content-type") || "image/png"; // default to png if not specified
-    if(response.status === 429) throw new Error("Image generation Limit Reached");
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(`Error: ${error.error}`);
+    )
+    
+    const result = response.data;
+
+    if (!result.data || !result.data[0].b64_json) {
+      throw new Error("API returned unexpected format");
     }
-    return response.json();
-  }
-  const result = await query({
-    response_format: "base64",
-    prompt: `\"${req.body.prompt}\"`,
-    model: "black-forest-labs/FLUX.1-dev",
-  });
-  console.log("Generated.");
-  // fs.writeFileSync(`./server/generated_images/${req.body.prompt.slice(10)}.${mimeType}`, Buffer.from(response.data));
-  // const base64String = Buffer.from(response.data).toString("base64");
-  const base64String = result.data[0].b64_json;
 
-  console.log("Image successfully sent");
-  res.json({ b64: `data:${mimeType};base64,${base64String}` });
+    // fs.writeFileSync(`./server/generated_images/${req.body.prompt.slice(10)}.${mimeType}`, Buffer.from(response.data));
+    const base64String = result.data[0].b64_json;
+    const mimeType = "image/jpeg";
 
-} catch (err) {
-    console.log("Image generation API error: ",err, " | ", err.name)
+    // console.log("Real Image successfully sent");
+    res.status(200).json({ b64: `data:${mimeType};base64,${base64String}` });
+
+  } catch (err) {
+      const errorMessage = err.response?.data?.error || err.message;
+      const customError = new Error(errorMessage);
+      if (err.response?.status === 429) {
+        customError.message = "Rate limit reached. Please wait.";
+        customError.statusCode = 429;
+      } else {
+        customError.statusCode = err.response?.status || 500;
+      }
+      throw customError;
   }
 }
 
 
 const postToCom = async (req, res) => {
-  try{
-    // console.log("Posting: ", req.body)
-    let image = req.body.photo;
+  // console.log("Posting: ", req.body)
+  let { prompt, name, photo } = req.body;
 
-    // if somehow MIME is wrong, replace it
-    if (image.startsWith("data:application/json; charset=utf-8")) {
-      image = image.replace("data:application/json; charset=utf-8", "data:image/jpeg");
-    }
-    
-    const uploadResult = await cloudinary.uploader.upload(image)
-    // console.log("Posting: ", uploadResult)
-    // console.log("Cloudinar upload results: ", uploadResult);
-  
-    const data = await posts.create({ prompt: req.body.prompt, name: req.body.name.length==0?"Anonymous":req.body.name, photo: uploadResult.secure_url});
-    res.json({message: "Successfully Posted", "data": data})
-  } catch(err){
-    console.log("Posting error: ", err);
+  if (!prompt || !photo) {
+    throw new Error("Missing required fields: prompt or photo");
   }
+
+  // if somehow MIME is wrong, replace it
+  if (photo.startsWith("data:application/json; charset=utf-8")) {
+    photo = photo.replace("data:application/json; charset=utf-8", "data:image/jpeg");
+  }
+  
+  const uploadResult = await cloudinary.uploader.upload(photo, {
+    folder: "ai_image_hive",
+  });
+  // console.log("Posting: ", uploadResult)
+  // console.log("Cloudinary upload results: ", uploadResult);
+
+  const newPost = await Post.create({
+    prompt,
+    name: name || "Anonymous", 
+    photo: uploadResult.secure_url,
+  });
+
+  res.status(201).json({
+    success: true,
+    message: "Successfully Posted", 
+    data: newPost
+  });
 }
 
 export {getAllImg, getGenImg, postToCom}

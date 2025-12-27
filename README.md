@@ -13,11 +13,11 @@
 
 <br />
 
-> **Note:** This site may or not be available at the moment due to the free tier limits of the Hugging Face API. If you encounter issues, please try again later or check the [Hugging Face API](https://huggingface.co) for more information.
+> **Note:** The image generation may or not work at the moment due to the free tier limits of the Hugging Face API (which only allows 5 requests per month). If you encounter issues, please try again later or check the [Hugging Face API](https://huggingface.co) for more information.
 
 
 <!-- Table of Contents -->
-# :notebook_with_decorative_cover: Table of Contents
+# :notebook_with_decorative_cover: Table of Contents  <!-- omit in toc -->
 
 - [:star2: About the Project](#star2-about-the-project)
   - [:camera: Screenshots](#camera-screenshots)

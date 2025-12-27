@@ -1,11 +1,9 @@
-import React, {useState} from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { surpriseMePrompts } from '../../constants/index.js'
-import {Loader} from "./../components/index.js"
+import { Loader } from "./../components/index.js"
 import { preview } from './../assets/index.js'
-// import viteLogo from './../../public/vite.svg'
-// check downloading in this page
 
 const CreatePage = () => {
   const [newPost, setNewPost] = useState({ name:"", prompt:"", photo: preview})
@@ -13,6 +11,8 @@ const CreatePage = () => {
   const [loading, setLoading] = useState(false);
   const [sharing, setSharing] = useState(false);
   const navigate = useNavigate();
+  const devURL = import.meta.env.VITE_BACKEND_URL_DEV;
+  const prodURL = import.meta.env.VITE_BACKEND_URL_PROD;
 
   function inchange(e){
     setErrMsg("");
@@ -25,13 +25,6 @@ const CreatePage = () => {
     return randomPrompt;
   }
 
-  function getBlobUrl(data, dtype){
-    const blob = new Blob([data], { type: `image/${dtype}` }); 
-      console.log("blob_1", blob)
-      const url = URL.createObjectURL(blob);
-      return url;
-  }
-
   async function genImg(e){
     e.preventDefault();
     try{
@@ -41,24 +34,22 @@ const CreatePage = () => {
         setErrMsg("Prompt is required!")
         return
       }
-      // let response = await axios.post("https://image-generator-tazg.onrender.com/api/v1/dalle", newPost) 
-      let response = await axios.post("http://localhost:8000/api/v1/dalle", newPost) 
-      // let response = await axios.get("./../../public/vite.svg", {responseType: "blob"})
-      // // mentioning response type here is necessary else we won't know a blob data is coming
-      console.log("create page 1: ", response.data, " | ", typeof(response.data.b64))
-      
-      // setNewPost({...newPost, binPhoto: response.data, photo: getBlobUrl(response.data, "svg+xml")})
+      let baseURL = import.meta.env.DEV? devURL : prodURL;
+      // console.log("Base URL:", baseURL);
+      let response = await axios.post(`${baseURL}/api/v1/generate`, newPost) 
+      // console.log("create page 1: ", response.data, " | ", typeof(response.data.b64))
       setNewPost({...newPost, photo: response.data.b64})
     } catch(err){
       console.log(err)
-      setErrMsg(err.message)
+      let msg = err?.response?.data?.message || err.message || "Something went wrong";
+      setErrMsg(msg.startsWith("You have reached")? "Free tier limit reached. Please try again next month.": msg)
     } finally{
       setLoading(false);
     }
   }
 
   async function shareToCom(){
-    console.log("Sharing to community: ", newPost)
+    // console.log("Sharing to community: ", newPost)
     try{
       if(newPost.photo == preview){
         setErrMsg("Can't share ungenerated images")
@@ -66,13 +57,14 @@ const CreatePage = () => {
       }
       // console.log("create page 2: ",newPost)
       setSharing(true)
-      // let response = await axios.post("https://image-generator-tazg.onrender.com/api/v1/posts", newPost)
-      let response = await axios.post("http://localhost:8000/api/v1/posts", newPost)
-      console.log("Successfully posted!")
+      let baseURL = import.meta.env.DEV? devURL : prodURL;
+      let response = await axios.post(`${baseURL}/api/v1/posts`, newPost)
+      // console.log("Successfully posted!")
       navigate("/");
     } catch(err){
       console.log(err);
-      setErrMsg(err.message)
+      let msg = err?.response?.data?.message || err.message || "Something went wrong";
+      setErrMsg(msg)
     } finally{
       setSharing(false);
     }
@@ -84,41 +76,30 @@ const CreatePage = () => {
     setNewPost((prev) => ({...prev, prompt: getSurprisePrompts(prev.prompt)}) )
   }
 
-  function downloadImg(e){
+  async function downloadImg(e){
     e.preventDefault()
+    if(!newPost.photo || newPost.photo===preview) throw new Error("No image to download")
+
     try{
-      // data:${mimeType};base64,${base64String}
-      // data:image/png;base64,rnvijrnpbw4
+      const response = await fetch(newPost.photo);
+      const blob = await response.blob(); 
 
-      // let response = await axios.get(newPost.photo, {responseType: 'blob'})
-      // const mimeType = response.headers['content-type']; 
-
-      const mimeType =  newPost.photo.split(',')[0].split(';')[0].slice(5,);
-      const rawBase64 = newPost.photo.split(',')[1];
-      const binaryString = atob(rawBase64);
-
-      // Create an ArrayBuffer to store the binary data
-      const len = binaryString.length;
-      const bytes = new Uint8Array(len);
-      for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-      }
-
-      const blob = new Blob([bytes], { type: `image/${mimeType}` }); 
+      const extension = blob.type.split('/')[1] || 'png';
       const url = URL.createObjectURL(blob);
-      // const base64String = Buffer.from(response.data).toString('base64')
-      
-      console.log("downloading: ", )
       const link = document.createElement("a");
+
       link.href = url;
-      link.download = `${newPost.prompt.slice(-10)}.png`;
+      link.download = `generated-image-${Date.now()}.${extension}`;
+      
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
+
     } catch(err){
       console.log(err)
-      setErrMsg((err.name=="InvalidCharacterError")?"Invalid Image URL":err.message)
+      let msg = err?.response?.data?.message || err.message || "Something went wrong";
+      setErrMsg((err.name=="InvalidCharacterError")?"Invalid Image URL":msg)
     }
   }
 

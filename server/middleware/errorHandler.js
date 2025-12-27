@@ -1,6 +1,15 @@
+
 const errorHandler = (err, req, res, next) => {
-  console.log("You've got an error: ",err.message);
-  res.status(err.statusCode||500).json({ message: err.message || "Something went wrong...", success: false, statusCode: err.statusCode || 500})
+  if (process.env.NODE_ENV !== 'production') console.error("Error Stack:", err.stack);
+  else console.error("Error Msg:", err.message);
+
+  const statusCode = err.statusCode || 500;
+  res.status(statusCode).json({
+    success: false,
+    message: err.message || "Internal Server Error",
+    // Optional: useful for frontend debugging
+    statusCode: statusCode 
+  });
 }
 
 export default errorHandler;
