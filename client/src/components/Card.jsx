@@ -3,21 +3,27 @@ import { download } from '../assets/index.js'
 
 const Card = ({data}) => {
 
-    async function downloadImg(){
-      let response = await axios.get(data.photo, {responseType: 'blob'})
-      const mimeType = response.headers['content-type']; 
-      const blob = new Blob([response.data], { type: `image/${mimeType}` }); 
+  async function downloadImg() {
+    try {
+      const response = await axios.get(data.photo, { responseType: 'blob' });      
+      const blob = response.data; 
+      
       const extension = blob.type.split('/')[1] || 'png';
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       
       link.href = url;
       link.download = `generated-image-${Date.now()}.${extension}`;
+      
       document.body.appendChild(link);
-      link.click();
+      link.click();      
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Download failed:", err);
+      window.alert("Failed to download image. Please try again.");
     }
+  }
 
   return (
     <div className='card_cont min-h-42.5
