@@ -1,0 +1,67 @@
+<mxfile host="65bd71144e">
+    <diagram id="My7q5SVcOgLRut7ccxvn" name="Page-1">
+        <mxGraphModel dx="785" dy="441" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" background="#ffffff" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="18" style="edgeStyle=none;html=1;exitX=0.9;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="3" target="4">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="" style="shape=actor;whiteSpace=wrap;html=1;noLabel=0;" vertex="1" parent="1">
+                    <mxGeometry x="270" y="213" width="40" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="4" target="5">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="632.6790726273148" y="246.79011592158565" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="4" value="User Interface&#xa;(React + Tailwind CSS)" style="swimlane;startSize=31;fillColor=#dae8fc;strokeColor=#6c8ebf;swimlaneFillColor=light-dark(#DAE8FC,#002525);" vertex="1" parent="1">
+                    <mxGeometry x="390" y="190.5" width="192" height="105" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="&lt;ul style=&quot;padding-left: 20px;&quot;&gt;&lt;li&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;User enters text prompt&lt;/font&gt;&lt;/li&gt;&lt;li&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;Generate, Download, Share&lt;/font&gt;&lt;/li&gt;&lt;li&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;Fetches and displays images&lt;/font&gt;&lt;/li&gt;&lt;/ul&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=1;points=[];autosize=1;strokeColor=none;fillColor=none;imageAspect=1;portConstraintRotation=0;allowArrows=0;enumerate=0;comic=0;backgroundOutline=0;" vertex="1" parent="4">
+                    <mxGeometry x="4" y="33.5" width="184" height="71.5" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" style="edgeStyle=none;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=12;fontColor=default;autosize=1;resizable=1;" edge="1" parent="1" source="5" target="6">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=12;fontColor=default;autosize=1;resizable=1;" edge="1" parent="1" target="7">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="862" y="315" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="30" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=12;fontColor=default;autosize=1;resizable=1;" edge="1" parent="1" target="8">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="671" y="298" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="5" value="Backend API &#xa;(Node.js + Express Server)" style="swimlane;startSize=31;swimlaneFillColor=#FFFFCC;fillColor=#FFFFCC;" vertex="1" parent="1">
+                    <mxGeometry x="671" y="171" width="217" height="144" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="&lt;p data-pm-slice=&quot;1 1 []&quot;&gt;&lt;/p&gt;&lt;ul style=&quot;padding-left: 20px;&quot;&gt;&lt;li&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;Receives prompt from frontend&lt;/font&gt;&lt;/li&gt;&lt;li&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;Calls Hugging Face Inference API&lt;/font&gt;&lt;/li&gt;&lt;li&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;Encodes and sends Base64 image&lt;/font&gt;&lt;/li&gt;&lt;li&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;Handles Cloudinary uploads&lt;/font&gt;&lt;/li&gt;&lt;li&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;Stores metadata in MongoDB&lt;/font&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;/p&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=1;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="5">
+                    <mxGeometry x="5" y="36.75" width="207" height="104" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="&lt;div&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;Image storage and Hosting&lt;/font&gt;&lt;/div&gt;" style="shape=datastore;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+                    <mxGeometry x="675" y="388" width="100" height="89" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="&lt;ul style=&quot;padding-left: 20px; margin-top: 12px; line-height: 90%;&quot;&gt;&lt;li&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;Name&lt;/font&gt;&lt;/li&gt;&lt;li&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;prompt&lt;/font&gt;&lt;/li&gt;&lt;li&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;Image URL&lt;/font&gt;&lt;/li&gt;&lt;/ul&gt;" style="shape=datastore;whiteSpace=wrap;html=1;align=left;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+                    <mxGeometry x="816" y="384" width="92" height="97" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="Hugging Face" style="swimlane;whiteSpace=wrap;html=1;swimlaneFillColor=#E1D5E7;fillColor=#e1d5e7;strokeColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="440" y="401.5" width="140" height="69" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;color: rgb(63, 63, 63); background-color: transparent;&quot;&gt;Image generation&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;snapToPoint=0;container=0;" vertex="1" parent="8">
+                    <mxGeometry x="-9" y="15.5" width="151" height="56" as="geometry"/>
+                </mxCell>
+                <mxCell id="20" value="&lt;b&gt;Cloudinary&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Helvetica;fontSize=12;fontColor=default;autosize=1;resizable=1;" vertex="1" parent="1">
+                    <mxGeometry x="687" y="384" width="81" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" value="&lt;b&gt;MongoDB&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Helvetica;fontSize=12;fontColor=default;autosize=1;resizable=1;" vertex="1" parent="1">
+                    <mxGeometry x="824.5" y="384" width="75" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="31" value="User" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Helvetica;fontSize=12;fontColor=default;autosize=1;resizable=1;" vertex="1" parent="1">
+                    <mxGeometry x="268.5" y="269.5" width="43" height="26" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import axios from 'axios'
 import { Card, Loader } from './../components/index.js'
+import sampleData from "./../assets/sampleData.json"
 // import vite from './../../public/vite.svg'
 
 const HomePage = () => {
-  const [imgData, setImgData] = useState([])
-  const [filteredData, setFilteredData] = useState([]);
+  const [imgData, setImgData] = useState(sampleData)
+  const [filteredData, setFilteredData] = useState(sampleData);
   const [searchfield, setSearchfield] = useState("");
   const [loading, setloading] = useState(true);
   const location = useLocation();
@@ -15,8 +16,10 @@ const HomePage = () => {
     async function getAllImg() {
       try{
         setloading(true)
-        let response = await axios.get("https://image-generator-tazg.onrender.com/api/v1/posts")
-        // let response = await axios.get("http://localhost:8000/api/v1/posts")
+        // let response = await axios.get("https://image-generator-tazg.onrender.com/api/v1/posts")
+        let response = await axios.get("http://localhost:8000/api/v1/posts")
+        // let response = { data: { images: sampleData } }
+        console.log(response.data.images)
         setImgData(response.data.images)
         setFilteredData(response.data.images)
       } catch(err) {
@@ -61,7 +64,7 @@ const HomePage = () => {
             <p className='w-fit text-3xl mt-7 mx-auto'>NO DATA FOUND</p>
           ) : (
           <section className='mt-7 grid grid-cols-1 gap-x-4 gap-y-4 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4'>
-            {filteredData?.map((item) => <Card key={item._id} data={item} /> )}
+            {filteredData?.map((item, i) => <Card key={i} data={item} /> )}
           </section>
           )}
         </div>

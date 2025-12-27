@@ -41,8 +41,8 @@ const CreatePage = () => {
         setErrMsg("Prompt is required!")
         return
       }
-      let response = await axios.post("https://image-generator-tazg.onrender.com/api/v1/dalle", newPost) 
-      // let response = await axios.post("http://localhost:8000/api/v1/dalle", newPost) 
+      // let response = await axios.post("https://image-generator-tazg.onrender.com/api/v1/dalle", newPost) 
+      let response = await axios.post("http://localhost:8000/api/v1/dalle", newPost) 
       // let response = await axios.get("./../../public/vite.svg", {responseType: "blob"})
       // // mentioning response type here is necessary else we won't know a blob data is coming
       console.log("create page 1: ", response.data, " | ", typeof(response.data.b64))
@@ -58,6 +58,7 @@ const CreatePage = () => {
   }
 
   async function shareToCom(){
+    console.log("Sharing to community: ", newPost)
     try{
       if(newPost.photo == preview){
         setErrMsg("Can't share ungenerated images")
@@ -65,7 +66,8 @@ const CreatePage = () => {
       }
       // console.log("create page 2: ",newPost)
       setSharing(true)
-      let response = await axios.post("https://image-generator-tazg.onrender.com/api/v1/posts", newPost)
+      // let response = await axios.post("https://image-generator-tazg.onrender.com/api/v1/posts", newPost)
+      let response = await axios.post("http://localhost:8000/api/v1/posts", newPost)
       console.log("Successfully posted!")
       navigate("/");
     } catch(err){

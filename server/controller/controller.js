@@ -72,7 +72,7 @@ const getGenImg = async (req, res) =>{
   }
   async function query(data) {
     const response = await fetch(
-      "https://router.huggingface.co/nscale/v1/images/generations",
+      "https://router.huggingface.co/together/v1/images/generations",
       {
         headers: {
           Authorization: `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
@@ -91,9 +91,9 @@ const getGenImg = async (req, res) =>{
     return response.json();
   }
   const result = await query({
-    response_format: "b64_json",
+    response_format: "base64",
     prompt: `\"${req.body.prompt}\"`,
-    model: "stabilityai/stable-diffusion-xl-base-1.0",
+    model: "black-forest-labs/FLUX.1-dev",
   });
   console.log("Generated.");
   // fs.writeFileSync(`./server/generated_images/${req.body.prompt.slice(10)}.${mimeType}`, Buffer.from(response.data));
@@ -111,16 +111,24 @@ const getGenImg = async (req, res) =>{
 
 const postToCom = async (req, res) => {
   try{
-    console.log("Posting: ", req.body)
+    // console.log("Posting: ", req.body)
+    let image = req.body.photo;
 
-    const uploadResult = await cloudinary.uploader.upload(req.body.photo)
-    console.log("Cloudinar upload results: ", uploadResult);
+    // if somehow MIME is wrong, replace it
+    if (image.startsWith("data:application/json; charset=utf-8")) {
+      image = image.replace("data:application/json; charset=utf-8", "data:image/jpeg");
+    }
+    
+    const uploadResult = await cloudinary.uploader.upload(image)
+    // console.log("Posting: ", uploadResult)
+    // console.log("Cloudinar upload results: ", uploadResult);
   
     const data = await posts.create({ prompt: req.body.prompt, name: req.body.name.length==0?"Anonymous":req.body.name, photo: uploadResult.secure_url});
     res.json({message: "Successfully Posted", "data": data})
   } catch(err){
-    console.log("Posting error: ",err.message, " | ", err.name);
+    console.log("Posting error: ", err);
   }
 }
 
 export {getAllImg, getGenImg, postToCom}
+
