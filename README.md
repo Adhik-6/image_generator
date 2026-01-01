@@ -34,7 +34,6 @@
 - [:wave: Contributing](#wave-contributing)
 - [:grey\_question: FAQ](#grey_question-faq)
 - [:warning: License](#warning-license)
-- [:handshake: Contact](#handshake-contact)
 - [:gem: Acknowledgements](#gem-acknowledgements)
 
 <!-- can't wrap the table of contents because of some auto formatting issue in VSCode
@@ -184,7 +183,6 @@ This adjustment is necessary because Windows requires the `SET` keyword to defin
 
 <!-- CONTRIBUTING -->
 ## :wave: Contributing
-
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
 If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
@@ -195,7 +193,6 @@ Don't forget to give the project a star! Thanks again!
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
 
 
 <!-- FAQ -->
@@ -218,24 +215,12 @@ Don't forget to give the project a star! Thanks again!
   + The site may be down due to free tier limits on the Hugging Face API. Try again later.
 
 
-
 <!-- License -->
 ## :warning: License
-
 Distributed under the no License.
-
-
-<!-- Contact -->
-## :handshake: Contact
-
-Adhik - adhik.m10a@gmail.com
-
 
 <!-- Acknowledgments -->
 ## :gem: Acknowledgements
-
-Use this section to mention useful resources and libraries that you have used in your projects.
-
  - [Tailwind CSS](https://tailwindcss.com) - For styling the frontend
  - [Cloudinary Documentaion](https://cloudinary.com) - For image upload and storage
  - [Hugging Face Dcoumentation](https://huggingface.co) - For providing the Inference API usage reference
