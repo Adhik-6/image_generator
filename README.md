@@ -5,7 +5,7 @@
 
   <h1>AI Image Hive</h1>
 
-  <p>An AI-powered image generation & sharing platform.</p>
+  <p>An AI-powered image generation & sharing platform</p>
 
   <p><a href="https://image-generator-tazg.onrender.com">View site</a></p>
 
